@@ -23,19 +23,23 @@ func main() {
 }
 
 func show(ans map[[2]int]int) {
+	hsep := "-------------------\n"
+
 	for i := 0; i < 9; i++ {
 		if i%3 == 0 {
-			fmt.Print("--------------------\n")
+			fmt.Print(hsep)
 		}
 
 		for j := 0; j < 9; j++ {
 			if j%3 == 0 {
-				fmt.Print("|")
+				fmt.Print("\b|")
 			}
 
 			fmt.Printf("%d ", ans[[2]int{i, j}])
 		}
 
-		fmt.Print("\n")
+		fmt.Print("\b|\n")
 	}
+	fmt.Print(hsep)
+
 }

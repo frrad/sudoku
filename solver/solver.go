@@ -1,52 +1,67 @@
 package solver
 
 import (
-	"fmt"
-
-	"github.com/frrad/boolform/bf"
-	"github.com/frrad/boolform/bfgosat"
+	"github.com/frrad/boolform/bfgini"
+	"github.com/frrad/boolform/smt"
 )
 
 func Solve(specify [][3]int) map[[2]int]int {
-	prob := basicProblem()
+	prob := smt.NewProb()
+	state := setupState(prob)
+	basicProblem(prob, state)
 
 	for _, spec := range specify {
-		prob.Assert(bf.Eq(bVar(spec[0], spec[1], spec[2]-1), bf.True))
+		prob.Assert(state[spec[0]][spec[1]][spec[2]-1].Eq(prob.NewBoolConst(true)))
 	}
 
-	sol := bfgosat.Solve(prob.AsFormula())
+	works := prob.Solve(bfgini.Solve)
 
-	if sol == nil {
+	if works == false {
 		panic("no sol")
 	}
-	return decode(sol)
+
+	return decode(state)
 }
 
-func basicProblem() *bf.Problem {
-	prob := bf.NewProb()
+func setupState(p *smt.Problem) [][][]*smt.Bool {
+	state := make([][][]*smt.Bool, 9)
+
+	for i := 0; i < 9; i++ {
+		state[i] = make([][]*smt.Bool, 9)
+		for j := 0; j < 9; j++ {
+			state[i][j] = make([]*smt.Bool, 9)
+			for k := 0; k < 9; k++ {
+				state[i][j][k] = p.NewBool()
+			}
+		}
+	}
+	return state
+}
+
+func basicProblem(prob *smt.Problem, state [][][]*smt.Bool) {
 
 	// Each number must be well defined
 	for i := 0; i < 9; i++ {
 		for j := 0; j < 9; j++ {
-			acc := []bf.Formula{}
+			acc := []*smt.Bool{}
 			for k := 0; k < 9; k++ {
-				acc = append(acc, bVar(i, j, k))
+				acc = append(acc, state[i][j][k])
 			}
-			prob.Assert(bf.Unique(acc...))
+			prob.Assert(acc[0].Unique(acc[1:]...))
 		}
 	}
 
 	// Each row (col) must contain each number exactly once
 	for i := 0; i < 9; i++ {
 		for j := 0; j < 9; j++ {
-			acc1 := []bf.Formula{}
-			acc2 := []bf.Formula{}
+			acc1 := []*smt.Bool{}
+			acc2 := []*smt.Bool{}
 			for k := 0; k < 9; k++ {
-				acc1 = append(acc1, bVar(i, k, j))
-				acc2 = append(acc2, bVar(k, i, j))
+				acc1 = append(acc1, state[i][k][j])
+				acc2 = append(acc2, state[k][i][j])
 			}
-			prob.Assert(bf.Unique(acc1...))
-			prob.Assert(bf.Unique(acc2...))
+			prob.Assert(acc1[0].Unique(acc1[1:]...))
+			prob.Assert(acc2[0].Unique(acc2[1:]...))
 		}
 	}
 
@@ -55,20 +70,20 @@ func basicProblem() *bf.Problem {
 		for b := 0; b < 3; b++ {
 
 			for k := 0; k < 9; k++ {
-				acc := []bf.Formula{}
+				acc := []*smt.Bool{}
 				for i := 0; i < 3; i++ {
 					for j := 0; j < 3; j++ {
-						acc = append(acc, bVar(i+3*a, j+3*b, k))
+						acc = append(acc, state[i+3*a][j+3*b][k])
 					}
 				}
-				prob.Assert(bf.Unique(acc...))
+				prob.Assert(acc[0].Unique(acc[1:]...))
 			}
 		}
 	}
-	return prob
+
 }
 
-func decode(sol map[string]bool) map[[2]int]int {
+func decode(state [][][]*smt.Bool) map[[2]int]int {
 	retval := map[[2]int]int{}
 
 	for i := 0; i < 9; i++ {
@@ -76,7 +91,7 @@ func decode(sol map[string]bool) map[[2]int]int {
 
 			ans := -1
 			for k := 0; k < 9; k++ {
-				if sol[bVar(i, j, k).String()] {
+				if state[i][j][k].SolVal() {
 					if ans != -1 {
 						panic("should not happen")
 					}
@@ -88,8 +103,4 @@ func decode(sol map[string]bool) map[[2]int]int {
 		}
 	}
 	return retval
-}
-
-func bVar(x, y, z int) bf.Formula {
-	return bf.Var(fmt.Sprintf("z-%d-%d-%d", x, y, z))
 }

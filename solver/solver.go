@@ -1,7 +1,7 @@
 package solver
 
 import (
-	"github.com/frrad/boolform/bfgini"
+	satsolver "github.com/frrad/boolform/bfgophersat"
 	"github.com/frrad/boolform/smt"
 )
 
@@ -14,7 +14,7 @@ func Solve(specify [][3]int) map[[2]int]int {
 		prob.Assert(state[spec[0]][spec[1]][spec[2]-1].Eq(prob.NewBoolConst(true)))
 	}
 
-	works := prob.Solve(bfgini.Solve)
+	works := prob.Solve(satsolver.Solve)
 
 	if works == false {
 		panic("no sol")

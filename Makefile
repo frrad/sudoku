@@ -13,3 +13,6 @@ index.html: index.py
 
 clean:
 	rm index.html wasm_exec.js main.wasm
+
+serve:
+	goexec 'http.ListenAndServe(":8080", http.FileServer(http.Dir(".")))'

@@ -6,12 +6,190 @@
 		<meta charset="utf-8">
 		<script src="wasm_exec.js"></script>
 		<script>
-			const go = new Go();
-			WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then((result) => {
-				go.run(result.instance);
-			});
+                const go = new Go();
+                let mod, inst;
+                WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then(async (result) => {
+                        mod = result.module;
+                        inst = result.instance;
+                        await go.run(inst)
+                });
 		</script>
 
+problem:
+<table border="1">
+  <tr>
+    <td><table>
+  <tr>
+    <td><input type="text" size="1" id="input-0-0"></td>
+    <td><input type="text" size="1" id="input-0-1"></td>
+    <td><input type="text" size="1" id="input-0-2"></td>
+  </tr>
+  <tr>
+    <td><input type="text" size="1" id="input-1-0"></td>
+    <td><input type="text" size="1" id="input-1-1"></td>
+    <td><input type="text" size="1" id="input-1-2"></td>
+  </tr>
+  <tr>
+    <td><input type="text" size="1" id="input-2-0"></td>
+    <td><input type="text" size="1" id="input-2-1"></td>
+    <td><input type="text" size="1" id="input-2-2"></td>
+  </tr>
+</table>
+</td>
+    <td><table>
+  <tr>
+    <td><input type="text" size="1" id="input-0-3"></td>
+    <td><input type="text" size="1" id="input-0-4"></td>
+    <td><input type="text" size="1" id="input-0-5"></td>
+  </tr>
+  <tr>
+    <td><input type="text" size="1" id="input-1-3"></td>
+    <td><input type="text" size="1" id="input-1-4"></td>
+    <td><input type="text" size="1" id="input-1-5"></td>
+  </tr>
+  <tr>
+    <td><input type="text" size="1" id="input-2-3"></td>
+    <td><input type="text" size="1" id="input-2-4"></td>
+    <td><input type="text" size="1" id="input-2-5"></td>
+  </tr>
+</table>
+</td>
+    <td><table>
+  <tr>
+    <td><input type="text" size="1" id="input-0-6"></td>
+    <td><input type="text" size="1" id="input-0-7"></td>
+    <td><input type="text" size="1" id="input-0-8"></td>
+  </tr>
+  <tr>
+    <td><input type="text" size="1" id="input-1-6"></td>
+    <td><input type="text" size="1" id="input-1-7"></td>
+    <td><input type="text" size="1" id="input-1-8"></td>
+  </tr>
+  <tr>
+    <td><input type="text" size="1" id="input-2-6"></td>
+    <td><input type="text" size="1" id="input-2-7"></td>
+    <td><input type="text" size="1" id="input-2-8"></td>
+  </tr>
+</table>
+</td>
+  </tr>
+  <tr>
+    <td><table>
+  <tr>
+    <td><input type="text" size="1" id="input-3-0"></td>
+    <td><input type="text" size="1" id="input-3-1"></td>
+    <td><input type="text" size="1" id="input-3-2"></td>
+  </tr>
+  <tr>
+    <td><input type="text" size="1" id="input-4-0"></td>
+    <td><input type="text" size="1" id="input-4-1"></td>
+    <td><input type="text" size="1" id="input-4-2"></td>
+  </tr>
+  <tr>
+    <td><input type="text" size="1" id="input-5-0"></td>
+    <td><input type="text" size="1" id="input-5-1"></td>
+    <td><input type="text" size="1" id="input-5-2"></td>
+  </tr>
+</table>
+</td>
+    <td><table>
+  <tr>
+    <td><input type="text" size="1" id="input-3-3"></td>
+    <td><input type="text" size="1" id="input-3-4"></td>
+    <td><input type="text" size="1" id="input-3-5"></td>
+  </tr>
+  <tr>
+    <td><input type="text" size="1" id="input-4-3"></td>
+    <td><input type="text" size="1" id="input-4-4"></td>
+    <td><input type="text" size="1" id="input-4-5"></td>
+  </tr>
+  <tr>
+    <td><input type="text" size="1" id="input-5-3"></td>
+    <td><input type="text" size="1" id="input-5-4"></td>
+    <td><input type="text" size="1" id="input-5-5"></td>
+  </tr>
+</table>
+</td>
+    <td><table>
+  <tr>
+    <td><input type="text" size="1" id="input-3-6"></td>
+    <td><input type="text" size="1" id="input-3-7"></td>
+    <td><input type="text" size="1" id="input-3-8"></td>
+  </tr>
+  <tr>
+    <td><input type="text" size="1" id="input-4-6"></td>
+    <td><input type="text" size="1" id="input-4-7"></td>
+    <td><input type="text" size="1" id="input-4-8"></td>
+  </tr>
+  <tr>
+    <td><input type="text" size="1" id="input-5-6"></td>
+    <td><input type="text" size="1" id="input-5-7"></td>
+    <td><input type="text" size="1" id="input-5-8"></td>
+  </tr>
+</table>
+</td>
+  </tr>
+  <tr>
+    <td><table>
+  <tr>
+    <td><input type="text" size="1" id="input-6-0"></td>
+    <td><input type="text" size="1" id="input-6-1"></td>
+    <td><input type="text" size="1" id="input-6-2"></td>
+  </tr>
+  <tr>
+    <td><input type="text" size="1" id="input-7-0"></td>
+    <td><input type="text" size="1" id="input-7-1"></td>
+    <td><input type="text" size="1" id="input-7-2"></td>
+  </tr>
+  <tr>
+    <td><input type="text" size="1" id="input-8-0"></td>
+    <td><input type="text" size="1" id="input-8-1"></td>
+    <td><input type="text" size="1" id="input-8-2"></td>
+  </tr>
+</table>
+</td>
+    <td><table>
+  <tr>
+    <td><input type="text" size="1" id="input-6-3"></td>
+    <td><input type="text" size="1" id="input-6-4"></td>
+    <td><input type="text" size="1" id="input-6-5"></td>
+  </tr>
+  <tr>
+    <td><input type="text" size="1" id="input-7-3"></td>
+    <td><input type="text" size="1" id="input-7-4"></td>
+    <td><input type="text" size="1" id="input-7-5"></td>
+  </tr>
+  <tr>
+    <td><input type="text" size="1" id="input-8-3"></td>
+    <td><input type="text" size="1" id="input-8-4"></td>
+    <td><input type="text" size="1" id="input-8-5"></td>
+  </tr>
+</table>
+</td>
+    <td><table>
+  <tr>
+    <td><input type="text" size="1" id="input-6-6"></td>
+    <td><input type="text" size="1" id="input-6-7"></td>
+    <td><input type="text" size="1" id="input-6-8"></td>
+  </tr>
+  <tr>
+    <td><input type="text" size="1" id="input-7-6"></td>
+    <td><input type="text" size="1" id="input-7-7"></td>
+    <td><input type="text" size="1" id="input-7-8"></td>
+  </tr>
+  <tr>
+    <td><input type="text" size="1" id="input-8-6"></td>
+    <td><input type="text" size="1" id="input-8-7"></td>
+    <td><input type="text" size="1" id="input-8-8"></td>
+  </tr>
+</table>
+</td>
+  </tr>
+</table>
+
+<button onClick="solveSudoku();">Solve</button>
+<br>
+solution:
 <table border="1">
   <tr>
     <td><table>

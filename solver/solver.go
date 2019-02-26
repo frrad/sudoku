@@ -1,7 +1,7 @@
 package solver
 
 import (
-	satsolver "github.com/frrad/boolform/bfgophersat"
+	satsolver "github.com/frrad/boolform/bfgini"
 	"github.com/frrad/boolform/smt"
 )
 

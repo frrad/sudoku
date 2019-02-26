@@ -10,3 +10,6 @@ wasm_exec.js:
 
 index.html: index.py
 	python index.py > index.html
+
+clean:
+	rm index.html wasm_exec.js main.wasm

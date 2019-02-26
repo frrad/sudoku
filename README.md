@@ -1,4 +1,4 @@
-A Golang/webasm/SAT solver based sudoku solver
+A Golang/webasm/SAT solver based sudoku solver. Online at http://frrad.com/sudoku
 
 
 To run locally you can serve with:

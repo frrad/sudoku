@@ -33,8 +33,7 @@ def sudoku(template):
 
 prepasta = '''
 <html>
-    <head>
-    </head>
+    <head><title>Sudoku Solver</title></head>
     <body>
 		<meta charset="utf-8">
 		<script src="wasm_exec.js"></script>

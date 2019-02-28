@@ -56,10 +56,9 @@ postpasta = '''
 
 
 print prepasta
-print 'problem:'
 print sudoku('<input type="text" size="1" id="input-%d-%d">')
 print '<button onClick="solveSudoku();">Solve</button>'
-print '<br>'
-print 'solution:'
-print sudoku('<input type="text" size="1" id="ans-%d-%d">')
+print '<br><br>'
+print '<p id="messageP"></p>'
+print sudoku('<p id="ans-%d-%d">&nbsp;&nbsp;&nbsp;</p>')
 print postpasta

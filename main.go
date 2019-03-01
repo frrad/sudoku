@@ -21,7 +21,11 @@ func registerCallback() {
 
 func solveSudoku([]js.Value) {
 	updateMessage("loading input...")
-	userInput := getInput()
+	userInput, err := getInput()
+	if err != nil {
+		updateMessage(fmt.Sprintf("invalid input: %+v", err))
+		return
+	}
 	updateMessage("solving...")
 	ans, err := solver.Solve(userInput)
 	if err != nil {
@@ -61,25 +65,32 @@ func writeHTML(id, html string) {
 	js.Global().Get("document").Call("getElementById", id).Set("innerHTML", html)
 }
 
-func getInput() [][3]int {
+func getInput() ([][3]int, error) {
 	ans := [][3]int{}
 	for i := 0; i < 9; i++ {
 		for j := 0; j < 9; j++ {
-			thisCell := getCell(i, j)
-			if thisCell >= 0 {
-				ans = append(ans, [3]int{i, j, thisCell})
+			cellVal, isFilled, err := getCell(i, j)
+			if err != nil {
+				return nil, err
+			}
+			if isFilled {
+				ans = append(ans, [3]int{i, j, cellVal})
 			}
 		}
 	}
-	return ans
+	return ans, nil
 }
 
-func getCell(x, y int) int {
+func getCell(x, y int) (int, bool, error) {
 	inputCellName := fmt.Sprintf("input-%d-%d", x, y)
 	inString := js.Global().Get("document").Call("getElementById", inputCellName).Get("value").String()
+	if inString == "" {
+		return 0, false, nil
+	}
+
 	i, err := strconv.Atoi(inString)
 	if err != nil {
-		return -1
+		return 0, false, fmt.Errorf("can't parse %s", inString)
 	}
-	return i
+	return i, true, nil
 }
